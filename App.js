@@ -1,7 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component }  from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { registerRootComponent } from 'expo';
+import React, { Component, useState }  from 'react';
 
 import firebase from 'firebase/app';
 import { Provider } from 'react-redux';
@@ -13,20 +10,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './components/auth/Home';
-import Homecopy from './components/auth/Homecopy';
 import Register from './components/auth/Register';
-import Register_s from './components/auth/Register_s';
 import Login from './components/auth/Login';
-import Login_s from './components/auth/Login_s';
 import Loading from './components/auth/Loading';
 import Mainstack from './components/Mainstack';
-
-import { useFonts, BigShouldersDisplay_700Bold } from '@expo-google-fonts/big-shoulders-display';
-import { Roboto_700Bold } from '@expo-google-fonts/roboto';
-import { AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
-import { Chonburi_400Regular } from '@expo-google-fonts/chonburi';
-import { PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
-import AppLoading from 'expo-app-loading';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -69,29 +56,27 @@ export default class App extends Component {
     }
     })
   }
+
   render() {
     const { loggedIn, loaded } = this.state;
     if (!loaded) {
       return (
-        <View>
-          <Text> Load </Text>
-        </View>
-        //<Loading />
+        <Loading />
       )
     }
     if (!loggedIn) {
     return (
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
-              <Stack.Screen name="Home" component={Home} options={{ headerShown: false}} />
-              <Stack.Screen name="Register" component={Register_s} 
+              <Stack.Screen name="Home" component={Home} options={{ headerShown: false}} navigation={this.props.navigation} />
+              <Stack.Screen name="Register" component={Register} 
                       options = {{
                         headerBackTitleVisible: false, 
                         headerTintColor: 'black',
                         headerTransparent: true, 
                         headerTitle: '',
                         }}/>
-              <Stack.Screen name="Login" component={Login_s} 
+              <Stack.Screen name="Login" component={Login} 
                       options = {{ 
                         headerBackTitleVisible: false, 
                         headerTintColor: 'black',
@@ -105,8 +90,12 @@ export default class App extends Component {
     return (
         <Provider store={store}>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName="Mainstack">
-              <Stack.Screen name="Mainstack" component={Mainstack} options = {{ headerShown:false }}/> 
+            <Stack.Navigator initialRouteName="Mainstack" >
+              <Stack.Screen 
+                name="Mainstack" 
+                component={Mainstack} 
+                options ={{ headerShown:false }}
+              /> 
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

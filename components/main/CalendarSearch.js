@@ -11,7 +11,7 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native';
-import SearchBar from './SearchBar';
+import CalendarSearchBar from './CalendarSearchBar';
 
 import firebase from 'firebase';
 require('firebase/firestore');
@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-function Search(props) {
+function CalendarSearch(props) {
     const [category, setCategory]= useState([
         {name: 'Local', key: '1', color : '#fce598', image: require('../../assets/images/local.png')},
         {name: 'Western', key: '2', color: '#bee9fe', image: require('../../assets/images/western.png')},
@@ -55,7 +55,7 @@ function Search(props) {
 
     return (
         <>
-            <SearchBar viewRecipe={viewRecipe}  />
+            <CalendarSearchBar viewRecipe={viewRecipe} />
             <View style={styles.containerGallery}>
                 <FlatList
                     numColumns={2}
@@ -63,6 +63,7 @@ function Search(props) {
                     data={category}
                     renderItem={({item}) => (
                         <TouchableOpacity
+                            //onPress = {(item) => recipeView(item)}
                             style={{ backgroundColor: item.color, ...styles.containerImage}}>
                             <Image
                             style={styles.image}
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-    
     },
     image: { 
         flex: 1,
@@ -110,10 +110,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingBottom: 10
     }
+  
 })
 
 const mapStateToProps = (store) => ({
     recipes : store.recipesState.recipes
 })
 
-export default connect(mapStateToProps, null)(Search)
+export default connect(mapStateToProps, null)(CalendarSearch)

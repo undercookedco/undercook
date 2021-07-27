@@ -1,9 +1,14 @@
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, CLEAR_DATA } from "../constants"
+import { 
+    USER_STATE_CHANGE, 
+    LIKED_RECIPE_STATE_CHANGE,
+    CALENDAR_STATE_CHANGE,
+    CLEAR_DATA 
+} from "../constants"
 
 const initialState = {
     currentUser: null,
-    posts: [],
-    following: [],
+    likedRecipe: [],
+    calendar: [],
 }
 
 export const user = (state = initialState, action) => {
@@ -13,16 +18,16 @@ export const user = (state = initialState, action) => {
                 ...state,
                 currentUser: action.currentUser
             }
-        case USER_POSTS_STATE_CHANGE:
+        case LIKED_RECIPE_STATE_CHANGE:
             return {
                 ...state,
-                posts: action.posts
+                likedRecipe: action.likedRecipe
             }
 
-        case USER_FOLLOWING_STATE_CHANGE:
+        case CALENDAR_STATE_CHANGE:
             return {
                 ...state,
-                following: action.following
+                following: action.calendar
             }
         case CLEAR_DATA:
             return initialState

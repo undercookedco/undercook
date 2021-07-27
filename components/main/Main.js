@@ -3,28 +3,22 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Image,
-  ImageBackground,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
+  Image
 } from "react-native";
 import { useFonts, Roboto_700Bold } from '@expo-google-fonts/roboto';
-import { EvilIcons, FontAwesome } from '@expo/vector-icons';
-import firebase from 'firebase';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { connect } from 'react-redux';
-
 
 const width = Dimensions.get('window').width;
 
 function Main(props) {
-    const { currentUser } = props;
-
     let [fontsLoaded] = useFonts({
         'roboto': Roboto_700Bold,
     });
@@ -32,7 +26,8 @@ function Main(props) {
     return (
         <TouchableWithoutFeedback onPress={() => {
             Keyboard.dismiss();
-        }}>
+        }}> 
+        <View styles={{width: '100%', height: '100%', backgroundColor:'#ffffff'}}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.welcomeText}>Welcome, {'\n'} 
@@ -55,9 +50,17 @@ function Main(props) {
                     />
                 </View>
             </View>
+            <View style={styles.imageContainer}>
+                    <Image 
+                        source={require('../../assets/images/mainpic.png')} 
+                        style={{
+                            width: 350,
+                            height: 300
+                        }}
+                    />
+            </View>
+        </View>
         </TouchableWithoutFeedback>
-        
-
     )
 }
 
@@ -118,6 +121,13 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(230,230, 230,1)",
         borderRadius: 15,
         textAlign: 'center'   
+    },
+    imageContainer: {
+        marginTop: 250,
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        marginLeft: -40
     }
-
 })

@@ -3,16 +3,16 @@ import {
   StyleSheet,
   View,
   Image,
-  ImageBackground,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard, 
   Dimensions
 } from "react-native";
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { Roboto_700Bold } from '@expo-google-fonts/roboto';
 import { connect } from 'react-redux';
+
+import firebase from 'firebase'
+require('firebase/firestore')
 
 const width = Dimensions.get('window').width;
 
@@ -23,6 +23,10 @@ function Profile(props) {
         'playfair': PlayfairDisplay_700Bold,
         'roboto': Roboto_700Bold,
     });
+
+    const onLogout = () => {
+        firebase.auth().signOut();
+    }
 
     return ( 
         <View style={styles.container}>
@@ -39,9 +43,9 @@ function Profile(props) {
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.editButton}
-                onPress={() => console.log("edit")}
+                onPress={() => onLogout()}
                 >
-                <Text style={styles.editText}>Edit Profile</Text>
+                <Text style={styles.editText}>Sign Out</Text>
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.myRecipe}
@@ -130,12 +134,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         borderRadius: 12
-
     },
     myRecipePic: { 
         width: 170,
         height: 170
-
     }
-    
 })

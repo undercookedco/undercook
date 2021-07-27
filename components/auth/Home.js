@@ -7,43 +7,60 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { useFonts, BigShouldersDisplay_700Bold } from '@expo-google-fonts/big-shoulders-display';
+import { BigShouldersDisplay_700Bold } from '@expo-google-fonts/big-shoulders-display';
+import * as Font from 'expo-font';
 
 import AppLoading from 'expo-app-loading';
 
-export default function Home({ navigation }) {
-    let [fontsLoaded] = useFonts({
-        'bigShoulders': BigShouldersDisplay_700Bold
-    });
+export default class Home extends Component {
+    state = {
+        fontsLoaded: false,
+    };
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.rect}>
-                <ImageBackground 
-                    source={require("../../assets/images/Screenshot_2021-05-28_at_1.51.23_PM-removebg.png")}
-                    resiexzeMode= "cover"
-                    style={styles.image}
-                >
-                </ImageBackground>
-                <Text style={styles.undercooked}>•UNDERCOOKED•</Text>
-                <TouchableOpacity 
-                onPress={() => navigation.navigate("Register")}
-            >
-                <View style = {styles.button}>
-                <Text style = {styles.buttonLabel}>REGISTER</Text>
+    async loadFonts() {
+        await Font.loadAsync({
+            'bigShoulders': BigShouldersDisplay_700Bold
+        });
+        this.setState({ fontsLoaded: true });
+    }
+
+    componentDidMount() {
+        this.loadFonts();
+    }
+
+    render() {
+        if (this.state.fontsLoaded) {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.rect}>
+                        <ImageBackground 
+                            source={require("../../assets/images/Screenshot_2021-05-28_at_1.51.23_PM-removebg.png")}
+                            resiexzeMode= "cover"
+                            style={styles.image}
+                        >
+                        </ImageBackground>
+                        <Text style={styles.undercooked}>•UNDERCOOKED•</Text>
+                        <TouchableOpacity 
+                        onPress={() => this.props.navigation.navigate("Register")}
+                    >
+                        <View style = {styles.button}>
+                        <Text style = {styles.buttonLabel}>REGISTER</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => this.props.navigation.navigate("Login")}
+                    >
+                        <View style = {styles.button}>
+                        <Text style = {styles.buttonLabel}>SIGN IN</Text>
+                        </View>
+                    </TouchableOpacity> 
+                    </View>
                 </View>
-            </TouchableOpacity>
-            <TouchableOpacity 
-                onPress={() => navigation.navigate("Login")}
-            >
-                <View style = {styles.button}>
-                <Text style = {styles.buttonLabel}>SIGN IN</Text>
-                </View>
-            </TouchableOpacity> 
-            </View>
-        </View>
-    )
-      
+            )
+        } else {
+         return null;
+        }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -77,7 +94,7 @@ const styles = StyleSheet.create({
     },
     buttonLabel: {
         color: 'white',
-        fontFamily: 'bigshoulders',
+        fontFamily: 'bigShoulders',
         fontSize: 20,
         fontWeight: '500'
     },

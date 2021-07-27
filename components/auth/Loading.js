@@ -8,25 +8,48 @@ import {
   TouchableOpacity
 } from "react-native";
 import { useFonts, BigShouldersDisplay_700Bold } from '@expo-google-fonts/big-shoulders-display';
+import * as Font from 'expo-font';
 
-export default function Loading() {
-    let [fontsLoaded] = useFonts({
-        'bigShoulder': BigShouldersDisplay_700Bold,
-    });
+export default class Loading extends Component {
+    constructor(props){
+        super(props)
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.rect}>
-                <ImageBackground 
-                    source={require("../../assets/images/Screenshot_2021-05-28_at_1.51.23_PM-removebg.png")}
-                    resiexzeMode= "cover"
-                    style={styles.image}
-                >
-                    <Text style={styles.undercooked}>•UNDERCOOKED•</Text>
-                </ImageBackground>
-            </View >
-        </View>
-    )
+        this.state = {
+            fontsLoaded: false
+        };
+    }
+
+    async loadFonts() {
+        await Font.loadAsync({
+            'bigshoulders': BigShouldersDisplay_700Bold
+        })
+        this.setState({ fontsLoaded: true});
+    }
+
+    componentDidMount() { 
+        this.loadFonts();
+    }
+
+    render() {
+        if (this.state.fontsLoaded) {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.rect}>
+                        <ImageBackground 
+                            source={require("../../assets/images/Screenshot_2021-05-28_at_1.51.23_PM-removebg.png")}
+                            resizeMode= "cover"
+                            style={styles.image}
+                        >
+                            <Text style={styles.undercooked}>•UNDERCOOKED•</Text>
+                        </ImageBackground>
+                    </View >
+                </View>
+            ) 
+        } else { 
+            return null;
+        }
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -48,7 +71,7 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     undercooked: {
-        fontFamily: 'bigShoulder',
+        fontFamily: 'bigshoulders',
         color: "rgba(255,255,255,1)",
         fontSize: 25,
         textAlign: "center",

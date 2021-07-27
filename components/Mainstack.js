@@ -13,15 +13,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser } from '../redux/actions/index';
+import { fetchUser, fetchRecipes } from '../redux/actions/index';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Main from './main/Main';
 import Profile from './main/Profile';
-import Calendar from './main/Calendar';
-import Search from './main/Search';
-import Store from './main/Store';
+import SearchStack from './main/SearchStack';
+import CalendarStack from './main/CalendarStack';
+import GroceryList from './main/GroceryList';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,10 +49,12 @@ const TabBarButton = ({children, onPress}) => (
 export class Mainstack extends Component {
     componentDidMount() {
         this.props.fetchUser();
+        this.props.fetchRecipes();
     }
 
     render() {
         const { currentUser } = this.props;
+        console.log(currentUser)
         return (
             <Tab.Navigator
                 tabBarOptions={{
@@ -62,7 +64,7 @@ export class Mainstack extends Component {
                         bottom: 20,
                         left: 20,
                         right: 20,
-                        elevation: 0,
+                        //elevation: 0,
                         backgroundColor: 'rgba(233,127,87,1)',
                         borderRadius: 15,
                         height: 70,
@@ -72,50 +74,50 @@ export class Mainstack extends Component {
                 >
                 <Tab.Screen name="Main" component={Main} 
                 options={{
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: () => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <Entypo name="home" size={24} color="#fff" resizeMode='contain' 
                             style ={{
                                 width: 25,
                                 height: 25,
-                                tintColor: focused ? '#e32f45' : '#748c94',
+                                //tintColor: focused ? '#e32f45' : '#748c94',
                             }}
                             />
                         </View>
                     )
                 }} />
-                <Tab.Screen name="Search" component={Search} 
+                <Tab.Screen name="Search" component={SearchStack} 
                 options={{
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: () => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <FontAwesome name="search" size={24} color="#fff" resizeMode='contain' 
                             style ={{
                                 width: 25,
                                 height: 25,
-                                tintColor: focused ? '#e32f45' : '#748c94',
+                                //tintColor: focused ? '#e32f45' : '#748c94',
                             }}
                             />
                         </View>
                     )
                 }} />
-                <Tab.Screen name="Calendar" component={Calendar} 
+                <Tab.Screen name="Calendar" component={CalendarStack} 
                 options={{
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: () => (
                         <FontAwesome name="calendar" size={30} color="#fff" resizeMode="contain"/>
                     ),
                     tabBarButton: (props) => (
                         <TabBarButton {... props} />
                     )
                 }} />
-                <Tab.Screen name="Store" component={Store} 
+                <Tab.Screen name="GroceryList" component={GroceryList} 
                 options={{
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: () => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <MaterialIcons name="local-grocery-store" size={24} color="#fff" resizeMode='contain' 
                             style ={{
                                 width: 25,
                                 height: 25,
-                                tintColor: focused ? '#e32f45' : '#748c94',
+                                //tintColor: focused ? '#e32f45' : '#748c94',
                             }}
                             />
                         </View>
@@ -123,13 +125,13 @@ export class Mainstack extends Component {
                 }} />
                 <Tab.Screen name="Profile" component={Profile} 
                 options={{
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: () => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <Ionicons name='person-circle' size={24} color="#fff" resizeMode='contain' 
                             style ={{
                                 width: 25,
                                 height: 25,
-                                tintColor: focused ? '#e32f45' : '#748c94',
+                                //tintColor: focused ? '#e32f45' : '#748c94',
                             }}
                             />
                         </View>
@@ -155,8 +157,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (store) => ({
-    currentUser: store.userState.currentUser
+    currentUser: store.userState.currentUser,
+    recipes: store.recipesState.recipes
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser }, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser, fetchRecipes }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Mainstack);
